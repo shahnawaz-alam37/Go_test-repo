@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-
-	"news.com/events/modules"
 )
 
 func main() {
@@ -16,6 +14,5 @@ func main() {
 	fmt.Println(x)
 	fmt.Printf("enter your name:")
 	fmt.Scanln(&name)
-	modules.Mini(name)
 
 }
