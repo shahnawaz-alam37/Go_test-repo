@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
+	"math/rand"
+	"time"
+	"strconv"
 	"github.com/gorilla/mux"
 )
 type Course struct{
@@ -22,7 +24,8 @@ var courses []Course
 
 //middleware or helpre - file
 func (c *Course) Isempty() bool{
-	return c.CourseId == "" && c.CourseName == ""
+	//return c.CourseId == "" && c.CourseName == ""
+	return c.CourseName == ""
 }
 
 
@@ -57,5 +60,27 @@ func getOnecourse(w http.ResponseWriter, r *http.Request)  {
 		}
 	}
 	json.NewEncoder(w).Encode("No course found with given id")
+	return
+}
+
+func createOneCourse(w http.ResponseWriter, r *http.Request)  {
+	fmt.Println("create one course")
+	w.Header().Set("Content-Type","application/json")
+
+	//what if body is emp
+	if r.Body == nil {
+		json.NewEncoder(w).Encode("body is empty")
+	}
+	//what if json is empty {}
+	var course Course
+	_ = json.NewDecoder(r.Body).Decode(&course)
+	if course.Isempty() {
+		json.NewEncoder(w).Encode("no data inside the json")
+		return
+	}
+	rand.Seed(time.Now().UnixNano())
+	course.CourseId = strconv.Itoa(rand.Intn(100))
+	courses = append(courses, course)
+	json.NewEncoder(w).Encode(course)
 	return
 }
