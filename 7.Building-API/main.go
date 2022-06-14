@@ -3,10 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
+	"log"
 	"math/rand"
-	"time"
+	"net/http"
 	"strconv"
+	"time"
 	"github.com/gorilla/mux"
 )
 type Course struct{
@@ -31,6 +32,19 @@ func (c *Course) Isempty() bool{
 
 func main(){
 	fmt.Println("simple api")
+	//seeding data
+	courses = append(courses, Course{CourseId: "2", CourseName: "ReactJS", CoursePrice: 299, Author: &Author{Fullname: "Hitesh Choudhary", Website: "lco.dev"}})
+	courses = append(courses, Course{CourseId: "4", CourseName: "MERN Stack", CoursePrice: 199, Author: &Author{Fullname: "Hitesh Choudhary", Website: "go.dev"}})
+
+	//connection
+	r := mux.NewRouter()
+	r.HandleFunc("/",serverHome).Methods("GET")
+	r.HandleFunc("/courses",getallcourses).Methods("GET")
+	r.HandleFunc("/course/{id}",getOnecourse).Methods("GET")
+	r.HandleFunc("/course",createOneCourse).Methods("POST")
+
+	//providing a port to listen and serve
+	log.Fatal(http.ListenAndServe(":3000",r))
 }
 
 //controllers
