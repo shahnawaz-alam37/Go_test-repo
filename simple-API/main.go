@@ -70,7 +70,7 @@ func Getoneinfo(w http.ResponseWriter, r *http.Request)  {
 	json.NewEncoder(w).Encode("no data found")	
 }
 
-//posting som data
+//posting some data
 func postsomedata(w http.ResponseWriter, r *http.Request)  {
 	fmt.Println("inserting new data")
 	w.Header().Set("Content-type","application/json")
